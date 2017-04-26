@@ -18,11 +18,6 @@ node('maven') {
     unstash name:"jar"
     sh "oc start-build cart --from-file=target/cart.jar --follow"
   }
-  stage('Shall we go live?') {
-    timeout(time:15, unit:'MINUTES') {
-      input message: "Shall we go live?"
-    }
-  }
   stage('Deploy') {
     openshiftDeploy depCfg: 'cart'
     openshiftVerifyDeployment depCfg: 'cart', replicaCount: 1, verifyReplicaCount: true
